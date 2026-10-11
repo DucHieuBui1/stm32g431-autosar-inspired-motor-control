@@ -6,36 +6,45 @@ The firmware uses an AUTOSAR Classic-inspired separation of application componen
 
 ```mermaid
 flowchart TB
-  ASW["Application Software (ASW)<br/>UserCommand, CommandArbitration"]
-  RTE["Runtime Environment boundary<br/>Handwritten command-policy adapter"]
-  subgraph BSW["Basic Software (BSW)"]
-    direction LR
-    subgraph STANDARD["Standard layered path"]
-      direction TB
-      SERVICES["Services Layer<br/>OS, EcuM, WdgM<br/>Project services: StateManager, SafetySupervisor"]
-      ECU["ECU Abstraction Layer<br/>Placeholder; not implemented"]
-      MCAL["Microcontroller Abstraction Layer (MCAL)<br/>Mcu, Adc (ADC2), Wdg"]
-      SERVICES -.-> ECU
-      ECU -.-> MCAL
-      SERVICES -->|"Current direct driver APIs"| MCAL
-    end
-    CDD["Complex Drivers (CDD)<br/>MotorControl: control cores, ADC1/TIM1 pipeline<br/>SerialCommunication: USART2 protocol"]
+  ASW["Application Software"]
+  RTE["RTE-style Adapter"]
+  subgraph BSW["Basic Software"]
+    SERVICES["Services"]
+    ECU["ECU Abstraction"]
+    MCAL["MCAL"]
+    CDD["Complex Drivers"]
+    SERVICES -.-> ECU
+    ECU -.-> MCAL
   end
-  HW["STM32G431 Microcontroller<br/>Clocks/reset, ADC2, IWDG | TIM1, ADC1, motor GPIO/BKIN, USART2"]
+  HW["STM32G431 Hardware"]
   ASW --- RTE
   RTE --- SERVICES
   RTE --- CDD
-  MCAL -->|"MCAL-owned resources"| HW
-  CDD -->|"Direct access to CDD-owned resources"| HW
-  classDef pending fill:#f5f5f5,stroke:#777,stroke-dasharray:5 5,color:#444
+  MCAL --- HW
+  CDD --- HW
+  classDef pending fill:#f3f4f6,stroke:#9ca3af,stroke-dasharray:5 5,color:#4b5563
   class ECU pending
 ```
 
-This view uses AUTOSAR Classic layer placement to organize the existing firmware. It does not imply that all standard modules or routes are implemented. The OS is a BSW service. ECU Abstraction belongs between Services and MCAL, but is currently a placeholder; implemented services use MCAL APIs directly. Complex Drivers form a separate BSW branch with direct access to exclusively assigned peripherals. They are neither an ECU Abstraction layer nor a layer beneath MCAL.
+Layer view, not a runtime call graph. The dashed ECU Abstraction layer is not implemented; services currently call MCAL and CDD APIs directly. The handwritten RTE adapter is limited to command policy.
 
-The lines connecting ASW, RTE and BSW show architectural placement, not universal mediation of calls. In the implemented command path, StateManager calls `Rte_CommandPolicyEvaluate`, which calls the ASW policy `CommandArbitration_Evaluate`. EcuM, StateManager and SafetySupervisor also call CDD APIs directly. The handwritten adapter therefore represents a narrow RTE-style interface rather than a generated AUTOSAR RTE. StateManager and SafetySupervisor are project-specific services, not claims of standard AUTOSAR module implementations.
+The OS belongs to the Services layer. StateManager and SafetySupervisor are project-specific services. Complex Drivers form a separate BSW branch with direct access to their assigned peripherals.
 
-MCAL owns clock/reset setup, ADC12-common setup, ADC2 sampling and IWDG access. The motor CDD owns TIM1, ADC1 and motor GPIO/BKIN; the serial CDD owns USART2 and PA2/PA3. Shared clock/reset ownership stays with Mcu. Control algorithms, observer, startup and fast-loop composition are currently located within the MotorControl CDD source tree; their placement in the diagram reflects that implementation.
+### Implemented command path
+
+StateManager calls `Rte_CommandPolicyEvaluate`, which delegates to ASW's `CommandArbitration_Evaluate`. EcuM, StateManager and SafetySupervisor also call CDD APIs directly. The adapter does not provide a generated or full AUTOSAR RTE.
+
+### Hardware-resource ownership
+
+| Owner | Resources |
+| --- | --- |
+| MCAL Mcu | Shared clocks, reset and ADC12-common setup |
+| MCAL Adc | ADC2 |
+| MCAL Wdg | IWDG |
+| MotorControl CDD | TIM1, ADC1 and motor GPIO/BKIN |
+| SerialCommunication CDD | USART2 and PA2/PA3 |
+
+The algorithm, observer, startup and fast-loop modules reside in the MotorControl CDD source tree. Shared clock/reset ownership remains with Mcu.
 
 ## Layers and interfaces
 

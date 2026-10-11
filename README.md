@@ -20,32 +20,38 @@ Control algorithms and bounded driver/service functions are implemented and host
 
 ```mermaid
 flowchart TB
-  ASW["Application Software (ASW)<br/>UserCommand, CommandArbitration"]
-  RTE["Runtime Environment boundary<br/>Handwritten command-policy adapter"]
-  subgraph BSW["Basic Software (BSW)"]
-    direction LR
-    subgraph STANDARD["Standard layered path"]
-      direction TB
-      SERVICES["Services Layer<br/>OS, EcuM, WdgM<br/>Project services: StateManager, SafetySupervisor"]
-      ECU["ECU Abstraction Layer<br/>Placeholder; not implemented"]
-      MCAL["Microcontroller Abstraction Layer (MCAL)<br/>Mcu, Adc (ADC2), Wdg"]
-      SERVICES -.-> ECU
-      ECU -.-> MCAL
-      SERVICES -->|"Current direct driver APIs"| MCAL
-    end
-    CDD["Complex Drivers (CDD)<br/>MotorControl: control cores, ADC1/TIM1 pipeline<br/>SerialCommunication: USART2 protocol"]
+  ASW["Application Software"]
+  RTE["RTE-style Adapter"]
+  subgraph BSW["Basic Software"]
+    SERVICES["Services"]
+    ECU["ECU Abstraction"]
+    MCAL["MCAL"]
+    CDD["Complex Drivers"]
+    SERVICES -.-> ECU
+    ECU -.-> MCAL
   end
-  HW["STM32G431 Microcontroller<br/>Clocks/reset, ADC2, IWDG | TIM1, ADC1, motor GPIO/BKIN, USART2"]
+  HW["STM32G431 Hardware"]
   ASW --- RTE
   RTE --- SERVICES
   RTE --- CDD
-  MCAL -->|"MCAL-owned resources"| HW
-  CDD -->|"Direct access to CDD-owned resources"| HW
-  classDef pending fill:#f5f5f5,stroke:#777,stroke-dasharray:5 5,color:#444
+  MCAL --- HW
+  CDD --- HW
+  classDef pending fill:#f3f4f6,stroke:#9ca3af,stroke-dasharray:5 5,color:#4b5563
   class ECU pending
 ```
 
-The arrangement follows AUTOSAR Classic layers: ASW, the RTE boundary, and BSW with Services, ECU Abstraction, MCAL and a separate Complex Drivers branch. The OS belongs to Services; CDDs access their assigned hardware directly rather than sitting below MCAL. Dashed arrows mark the unimplemented ECU Abstraction path. Solid lines above BSW indicate layer placement, not a complete runtime call graph: the current RTE adapter only handles command policy, and services call MCAL/CDD APIs directly. See [architecture and interfaces](docs/architecture.md) for actual dependencies and ownership.
+Layer view, not a runtime call graph. The dashed ECU Abstraction layer is not implemented; services currently call MCAL and CDD APIs directly. The handwritten RTE adapter is limited to command policy.
+
+| Layer | Project modules |
+| --- | --- |
+| Application Software | UserCommand, CommandArbitration |
+| RTE-style Adapter | Command-policy interface |
+| Services | OS, EcuM, WdgM, StateManager, SafetySupervisor |
+| ECU Abstraction | Not implemented |
+| MCAL | Mcu, Adc, Wdg |
+| Complex Drivers | MotorControl, SerialCommunication |
+
+The OS belongs to Services. Complex Drivers access their assigned hardware directly. See [architecture and interfaces](docs/architecture.md) for dependencies and resource ownership.
 
 ## Repository layout
 
