@@ -1,0 +1,338 @@
+[
+  {
+    "runner": "Tests/Host/Adc/run_adc_host_tests.ps1",
+    "name": "test_adc",
+    "args": [
+      "-std=c99",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-O0",
+      "-I",
+      "Tests/Host/Adc/fake",
+      "-I",
+      "Software/Bsw/Mcal/Adc/Inc",
+      "-I",
+      "Software/Bsw/Mcal/Mcu/Inc",
+      "-I",
+      "Software/Bsw/Common/Inc",
+      "Tests/Host/Adc/test_adc.c"
+    ]
+  },
+  {
+    "runner": "Tests/Host/Adc/run_adc_host_tests.ps1",
+    "name": "test_ecum_adc_integration",
+    "args": [
+      "-std=c99",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-O0",
+      "-I",
+      "Software/Bsw/Mcal/Adc/Inc",
+      "-I",
+      "Software/Bsw/Mcal/Mcu/Inc",
+      "-I",
+      "Software/Bsw/Mcal/Wdg/Inc",
+      "-I",
+      "Software/Bsw/Services/EcuM/Inc",
+      "-I",
+      "Software/Bsw/Services/Os/Inc",
+      "-I",
+      "Software/Bsw/Services/SafetySupervisor/Inc",
+      "-I",
+      "Software/Bsw/Services/StateManager/Inc",
+      "-I",
+      "Software/Bsw/Services/WdgM/Inc",
+      "-I",
+      "Software/Bsw/ComplexDrivers/MotorControl/Inc",
+      "-I",
+      "Software/Bsw/ComplexDrivers/SerialCommunication/Inc",
+      "-I",
+      "Software/Bsw/Common/Inc",
+      "Tests/Host/Adc/test_ecum_adc_integration.c"
+    ]
+  },
+  {
+    "runner": "Tests/Host/MotorControl/run_motor_control_host_tests.ps1",
+    "name": "test_motor_control_cdd",
+    "args": [
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-O0",
+      "-I",
+      "Tests/Host/MotorControl/fake",
+      "-I",
+      "Software/Bsw/Common/Inc",
+      "-I",
+      "Software/Bsw/Mcal/Adc/Inc",
+      "-I",
+      "Software/Bsw/ComplexDrivers/MotorControl/Inc",
+      "-I",
+      "Software/Bsw/Services/StateManager/Inc",
+      "Tests/Host/MotorControl/test_motor_control_cdd.c"
+    ]
+  },
+  {
+    "runner": "Tests/Host/MotorControl/run_motor_control_host_tests.ps1",
+    "name": "test_sc1_config",
+    "args": [
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-O0",
+      "-I",
+      "Software/Bsw/Common/Inc",
+      "-I",
+      "Software/Bsw/ComplexDrivers/MotorControl/Inc",
+      "-I",
+      "Software/Bsw/Services/SafetySupervisor/Inc",
+      "Tests/Host/MotorControl/test_sc1_config.c"
+    ]
+  },
+  {
+    "runner": "Tests/Host/MotorControlAlgorithm/run_motor_control_algorithm_host_tests.ps1",
+    "name": "test_motor_control_algorithm",
+    "args": [
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-O2",
+      "-I",
+      "Software/Bsw/Common/Inc",
+      "-I",
+      "Software/Bsw/ComplexDrivers/MotorControl/Inc",
+      "Tests/Host/MotorControlAlgorithm/test_motor_control_algorithm.c"
+    ]
+  },
+  {
+    "runner": "Tests/Host/MotorControlFastLoop/run_motor_control_fast_loop_host_tests.ps1",
+    "name": "test_motor_control_fast_loop",
+    "args": [
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-O2",
+      "-I",
+      "Software/Bsw/Common/Inc",
+      "-I",
+      "Software/Bsw/ComplexDrivers/MotorControl/Inc",
+      "Tests/Host/MotorControlFastLoop/test_motor_control_fast_loop.c",
+      "-lm"
+    ]
+  },
+  {
+    "runner": "Tests/Host/MotorControlFastLoop/run_motor_control_fast_loop_host_tests.ps1",
+    "name": "test_motor_control_fast_loop_injection",
+    "args": [
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-O2",
+      "-I",
+      "Software/Bsw/Common/Inc",
+      "-I",
+      "Software/Bsw/ComplexDrivers/MotorControl/Inc",
+      "Tests/Host/MotorControlFastLoop/test_motor_control_fast_loop_injection.c"
+    ]
+  },
+  {
+    "runner": "Tests/Host/MotorControlObserver/run_motor_control_observer_host_tests.ps1",
+    "name": "test_motor_control_observer",
+    "args": [
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-O2",
+      "-I",
+      "Software/Bsw/Common/Inc",
+      "-I",
+      "Software/Bsw/ComplexDrivers/MotorControl/Inc",
+      "Tests/Host/MotorControlObserver/test_motor_control_observer.c",
+      "-lm"
+    ]
+  },
+  {
+    "runner": "Tests/Host/MotorControlStartup/run_motor_control_startup_host_tests.ps1",
+    "name": "test_motor_control_startup",
+    "args": [
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-O2",
+      "-I",
+      "Software/Bsw/Common/Inc",
+      "-I",
+      "Software/Bsw/ComplexDrivers/MotorControl/Inc",
+      "Tests/Host/MotorControlStartup/test_motor_control_startup.c"
+    ]
+  },
+  {
+    "runner": "Tests/Host/Os/run_os_host_tests.ps1",
+    "name": "test_os_step7a",
+    "args": [
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-O0",
+      "-I",
+      "Tests/Host/Os/fake",
+      "-I",
+      "Software/Bsw/Common/Inc",
+      "-I",
+      "Software/Bsw/Services/Os/Inc",
+      "Tests/Host/Os/test_os_step7a.c"
+    ]
+  },
+  {
+    "runner": "Tests/Host/Os/run_os_host_tests.ps1",
+    "name": "test_os_cfg_step7a",
+    "args": [
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-O0",
+      "-I",
+      "Software/Bsw/Common/Inc",
+      "-I",
+      "Software/Bsw/Services/Os/Inc",
+      "-I",
+      "Software/Bsw/Services/EcuM/Inc",
+      "-I",
+      "Software/Bsw/Services/SafetySupervisor/Inc",
+      "-I",
+      "Software/Bsw/Services/StateManager/Inc",
+      "Tests/Host/Os/test_os_cfg_step7a.c"
+    ]
+  },
+  {
+    "runner": "Tests/Host/SerialCommunication/run_serial_communication_host_tests.ps1",
+    "name": "test_serial_communication_cdd",
+    "args": [
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-O0",
+      "-I",
+      "Tests/Host/SerialCommunication/fake",
+      "-I",
+      "Software/Bsw/Common/Inc",
+      "-I",
+      "Software/Bsw/ComplexDrivers/SerialCommunication/Inc",
+      "Tests/Host/SerialCommunication/test_serial_communication_cdd.c"
+    ]
+  },
+  {
+    "runner": "Tests/Host/SerialCommunication/run_serial_communication_host_tests.ps1",
+    "name": "test_mcu_communication",
+    "args": [
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-O0",
+      "-I",
+      "Tests/Host/SerialCommunication/fake_mcu",
+      "-I",
+      "Software/Bsw/Common/Inc",
+      "-I",
+      "Software/Bsw/Mcal/Mcu/Inc",
+      "Tests/Host/SerialCommunication/test_mcu_communication.c"
+    ]
+  },
+  {
+    "runner": "Tests/Host/Supervision/run_supervision_host_tests.ps1",
+    "name": "test_supervision",
+    "args": [
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-O0",
+      "-I",
+      "Software/Bsw/Common/Inc",
+      "-I",
+      "Software/Rte/Inc",
+      "-I",
+      "Software/Asw/CommandArbitration/Inc",
+      "-I",
+      "Software/Bsw/Mcal/Adc/Inc",
+      "-I",
+      "Software/Bsw/Mcal/Mcu/Inc",
+      "-I",
+      "Software/Bsw/Mcal/Wdg/Inc",
+      "-I",
+      "Software/Bsw/ComplexDrivers/MotorControl/Inc",
+      "-I",
+      "Software/Bsw/ComplexDrivers/SerialCommunication/Inc",
+      "-I",
+      "Software/Bsw/Services/Os/Inc",
+      "-I",
+      "Software/Bsw/Services/SafetySupervisor/Inc",
+      "-I",
+      "Software/Bsw/Services/StateManager/Inc",
+      "-I",
+      "Software/Bsw/Services/WdgM/Inc",
+      "Tests/Host/Supervision/test_supervision.c"
+    ]
+  },
+  {
+    "runner": "Tests/Host/UserCommand/run_user_command_host_tests.ps1",
+    "name": "test_user_command",
+    "args": [
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-O0",
+      "-I",
+      "Software/Bsw/Common/Inc",
+      "-I",
+      "Software/Asw/UserCommand/Inc",
+      "Tests/Host/UserCommand/test_user_command.c"
+    ]
+  },
+  {
+    "runner": "Tests/Host/UserCommand/run_user_command_host_tests.ps1",
+    "name": "test_user_command_corruption",
+    "args": [
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-O0",
+      "-I",
+      "Software/Bsw/Common/Inc",
+      "-I",
+      "Software/Asw/UserCommand/Inc",
+      "Tests/Host/UserCommand/test_user_command_corruption.c"
+    ]
+  }
+]

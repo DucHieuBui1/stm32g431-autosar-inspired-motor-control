@@ -1,0 +1,47 @@
+gcc.exe (MinGW.org GCC-6.3.0-1) 6.3.0
+Copyright (C) 2016 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+PASS: test_adc compile
+PASS: test_adc execute
+PASS: test_ecum_adc_integration compile
+PASS: test_ecum_adc_integration execute
+PASS: test_motor_control_cdd compile
+PASS: test_motor_control_cdd execute
+PASS: test_sc1_config compile
+PASS: test_sc1_config execute
+PASS: test_motor_control_algorithm compile
+PASS: test_motor_control_algorithm execute
+PASS: test_motor_control_fast_loop compile
+PASS: test_motor_control_fast_loop execute
+PASS: test_motor_control_fast_loop_injection compile
+PASS: test_motor_control_fast_loop_injection execute
+PASS: test_motor_control_observer compile
+PASS: test_motor_control_observer execute
+PASS: test_motor_control_startup compile
+PASS: test_motor_control_startup execute
+PASS: test_os_step7a compile
+PASS: test_os_step7a execute
+PASS: test_os_cfg_step7a compile
+PASS: test_os_cfg_step7a execute
+PASS: test_serial_communication_cdd compile
+PASS: test_serial_communication_cdd execute
+PASS: test_mcu_communication compile
+PASS: test_mcu_communication execute
+PASS: test_supervision compile
+PASS: test_supervision execute
+PASS: test_user_command compile
+PASS: test_user_command execute
+PASS: test_user_command_corruption compile
+PASS: test_user_command_corruption execute
+PASS: serial source boundary
+PASS: valid_enabled_profile
+PASS: invalid_enabled
+PASS: disabled_latent_current
+PASS: invalid_current_low
+PASS: invalid_current_high
+PASS: invalid_duration_low
+PASS: invalid_duration_high
+PASS: invalid_lease_low
+PASS: invalid_lease_high
+Summary: 42 checks passed; 0 failed

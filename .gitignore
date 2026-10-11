@@ -1,0 +1,16 @@
+﻿/Debug/
+/Release/
+/.metadata/
+/.ide-workspace/
+/build/
+__pycache__/
+*.py[cod]
+*.o
+*.d
+*.elf
+*.map
+*.list
+*.su
+*.cyclo
+*.exe
+*.log
