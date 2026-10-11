@@ -2,6 +2,41 @@
 
 The firmware uses an AUTOSAR Classic-inspired separation of application components, a handwritten RTE-style adapter, BSW services, MCAL and complex drivers. The table below describes implemented responsibilities; configuration and activation restrictions are listed separately.
 
+## Firmware layers
+
+```mermaid
+flowchart TB
+  ASW["Application Software (ASW)<br/>UserCommand, CommandArbitration"]
+  RTE["Runtime Environment boundary<br/>Handwritten command-policy adapter"]
+  subgraph BSW["Basic Software (BSW)"]
+    direction LR
+    subgraph STANDARD["Standard layered path"]
+      direction TB
+      SERVICES["Services Layer<br/>OS, EcuM, WdgM<br/>Project services: StateManager, SafetySupervisor"]
+      ECU["ECU Abstraction Layer<br/>Placeholder; not implemented"]
+      MCAL["Microcontroller Abstraction Layer (MCAL)<br/>Mcu, Adc (ADC2), Wdg"]
+      SERVICES -.-> ECU
+      ECU -.-> MCAL
+      SERVICES -->|"Current direct driver APIs"| MCAL
+    end
+    CDD["Complex Drivers (CDD)<br/>MotorControl: control cores, ADC1/TIM1 pipeline<br/>SerialCommunication: USART2 protocol"]
+  end
+  HW["STM32G431 Microcontroller<br/>Clocks/reset, ADC2, IWDG | TIM1, ADC1, motor GPIO/BKIN, USART2"]
+  ASW --- RTE
+  RTE --- SERVICES
+  RTE --- CDD
+  MCAL -->|"MCAL-owned resources"| HW
+  CDD -->|"Direct access to CDD-owned resources"| HW
+  classDef pending fill:#f5f5f5,stroke:#777,stroke-dasharray:5 5,color:#444
+  class ECU pending
+```
+
+This view uses AUTOSAR Classic layer placement to organize the existing firmware. It does not imply that all standard modules or routes are implemented. The OS is a BSW service. ECU Abstraction belongs between Services and MCAL, but is currently a placeholder; implemented services use MCAL APIs directly. Complex Drivers form a separate BSW branch with direct access to exclusively assigned peripherals. They are neither an ECU Abstraction layer nor a layer beneath MCAL.
+
+The lines connecting ASW, RTE and BSW show architectural placement, not universal mediation of calls. In the implemented command path, StateManager calls `Rte_CommandPolicyEvaluate`, which calls the ASW policy `CommandArbitration_Evaluate`. EcuM, StateManager and SafetySupervisor also call CDD APIs directly. The handwritten adapter therefore represents a narrow RTE-style interface rather than a generated AUTOSAR RTE. StateManager and SafetySupervisor are project-specific services, not claims of standard AUTOSAR module implementations.
+
+MCAL owns clock/reset setup, ADC12-common setup, ADC2 sampling and IWDG access. The motor CDD owns TIM1, ADC1 and motor GPIO/BKIN; the serial CDD owns USART2 and PA2/PA3. Shared clock/reset ownership stays with Mcu. Control algorithms, observer, startup and fast-loop composition are currently located within the MotorControl CDD source tree; their placement in the diagram reflects that implementation.
+
 ## Layers and interfaces
 
 Source links identify the implementation of each responsibility.

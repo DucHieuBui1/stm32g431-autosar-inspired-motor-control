@@ -19,27 +19,33 @@ Control algorithms and bounded driver/service functions are implemented and host
 ## Architecture
 
 ```mermaid
-flowchart TD
-  RTE[Handwritten RTE command policy] --> ASW[ASW: CommandArbitration]
-  USER[ASW: disabled UserCommand profile]
-  STATE[StateManager] --> RTE
-  ECUM[EcuM] --> MCU[MCAL: Mcu and Wdg]
-  ECUM --> OS[Static OS and event tasks]
-  OS --> STATE
-  OS --> SAFE[SafetySupervisor]
-  OS --> ECUM
-  ECUM --> WDGM[WdgM]
-  SAFE --> ADC[MCAL: ADC2]
-  SAFE --> MOTOR[MotorControl CDD: ADC1 and TIM1]
-  STATE --> MOTOR
-  STATE --> SERIAL[SerialCommunication CDD: USART2]
-  ECUM --> MOTOR
-  ECUM --> SERIAL
-  WDGM --> MCU
-  MOTOR --> PURE[Algorithm, observer, startup and fast-loop]
+flowchart TB
+  ASW["Application Software (ASW)<br/>UserCommand, CommandArbitration"]
+  RTE["Runtime Environment boundary<br/>Handwritten command-policy adapter"]
+  subgraph BSW["Basic Software (BSW)"]
+    direction LR
+    subgraph STANDARD["Standard layered path"]
+      direction TB
+      SERVICES["Services Layer<br/>OS, EcuM, WdgM<br/>Project services: StateManager, SafetySupervisor"]
+      ECU["ECU Abstraction Layer<br/>Placeholder; not implemented"]
+      MCAL["Microcontroller Abstraction Layer (MCAL)<br/>Mcu, Adc (ADC2), Wdg"]
+      SERVICES -.-> ECU
+      ECU -.-> MCAL
+      SERVICES -->|"Current direct driver APIs"| MCAL
+    end
+    CDD["Complex Drivers (CDD)<br/>MotorControl: control cores, ADC1/TIM1 pipeline<br/>SerialCommunication: USART2 protocol"]
+  end
+  HW["STM32G431 Microcontroller<br/>Clocks/reset, ADC2, IWDG | TIM1, ADC1, motor GPIO/BKIN, USART2"]
+  ASW --- RTE
+  RTE --- SERVICES
+  RTE --- CDD
+  MCAL -->|"MCAL-owned resources"| HW
+  CDD -->|"Direct access to CDD-owned resources"| HW
+  classDef pending fill:#f5f5f5,stroke:#777,stroke-dasharray:5 5,color:#444
+  class ECU pending
 ```
 
-Arrows show API dependencies, not activation. CDDs access assigned registers through CMSIS with ownership separate from MCAL. See [architecture and interfaces](docs/architecture.md).
+The arrangement follows AUTOSAR Classic layers: ASW, the RTE boundary, and BSW with Services, ECU Abstraction, MCAL and a separate Complex Drivers branch. The OS belongs to Services; CDDs access their assigned hardware directly rather than sitting below MCAL. Dashed arrows mark the unimplemented ECU Abstraction path. Solid lines above BSW indicate layer placement, not a complete runtime call graph: the current RTE adapter only handles command policy, and services call MCAL/CDD APIs directly. See [architecture and interfaces](docs/architecture.md) for actual dependencies and ownership.
 
 ## Repository layout
 
