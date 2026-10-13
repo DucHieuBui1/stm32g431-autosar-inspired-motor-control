@@ -90,7 +90,7 @@ python3 scripts/run_host_tests.py --cc gcc
 
 The runner builds in a temporary directory and retains the original standards, optimization, include order, strict warnings and math-library flags. It includes the serial source-boundary check and UserCommand positive/negative compile probes. Original PowerShell runners retain their pinned MinGW GCC 6.3.0 configuration.
 
-The latest 2026-10-11 Windows run compiled and executed **16 C executables**, checked nine compile probes and passed one source-boundary check using MinGW GCC 6.3.0: **42 checks passed, zero failed**. This is not a test-case count or coverage measure. Native Linux execution remains unverified. See [commands, source identity and results](docs/verification.md), [compiler recipes](scripts/host_test_manifest.json) and [latest raw output](docs/host-test-2026-10-11.txt).
+Windows host verification compiled and executed **16 C executables**, checked nine compile probes and passed one source-boundary check using MinGW GCC 6.3.0: **42 checks passed, zero failed**. This is not a test-case count or coverage measure. Native Linux execution remains unverified. See [commands, source identity and results](docs/verification.md), [compiler recipes](scripts/host_test_manifest.json) and [host-test results](docs/host-test-results.txt).
 
 ## Hardware status and current limitations
 

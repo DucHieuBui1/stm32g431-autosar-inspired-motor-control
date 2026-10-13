@@ -11,11 +11,10 @@ python3 scripts/run_host_tests.py --cc gcc
 
 The Windows PowerShell runners under `Tests/Host/` pin MinGW GCC 6.3.0 at `C:\MinGW\bin\gcc.exe`. The portable runner accepts a compiler command through `--cc` or `CC` and reports its version. Required compile, execution or source-check failures produce a nonzero exit status.
 
-## Latest host result
+## Host-test results
 
-| Field | Recorded value |
+| Field | Value |
 | --- | --- |
-| Date | 2026-10-11 |
 | Platform | Windows 11, build 26200 |
 | Compiler | `gcc.exe (MinGW.org GCC-6.3.0-1) 6.3.0` |
 | Input manifest SHA-256 | `6ee03e0e79b1765dfc59b2a5875034424cfd971c9c759d7edd04c3613ac95a9f` |
@@ -26,7 +25,7 @@ The Windows PowerShell runners under `Tests/Host/` pin MinGW GCC 6.3.0 at `C:\Mi
 | Serial source-boundary check | 1 passed, 0 failed |
 | Total / exit status | 42 checks passed, 0 failed / 0 |
 
-[Latest raw output](host-test-2026-10-11.txt) records this execution. The count describes checks, not test cases or coverage. The manifest identifies exact input bytes, including firmware, tests, runners, IDE inputs and dependency files. This is host evidence only; target compilation, electrical behavior and motor performance remain unverified.
+[Host-test results](host-test-results.txt) summarize the compiler, input identity and check outcomes. The count describes checks, not test cases or coverage. The manifest identifies exact input bytes, including firmware, tests, runners, IDE inputs and dependency files. This is host evidence only; target compilation, electrical behavior and motor performance remain unverified.
 
 Native Linux execution remains unverified.
 
@@ -40,7 +39,7 @@ python U:/scripts/run_host_tests.py --cc C:/MinGW/bin/gcc.exe
 subst U: /D
 ```
 
-The runner preserves the drive alias. The recorded Windows host run used this command.
+The runner preserves the drive alias when locating source files.
 
 ## Input integrity
 
@@ -81,7 +80,7 @@ Every recipe retains `-Wall -Wextra -Werror -pedantic`. ADC/EcuM use C99 and `-O
 
 The Python runner checks the serial dependency boundary and all UserCommand compile profiles: one valid enabled profile; invalid enabled value; disabled latent current; current -301/+301 mA; duration 0/5001 ms; lease 0/101 ms. Negative probes must fail compilation. Probe changes affect only temporary source copies, as in the PowerShell runner.
 
-The executable inventory is checked against every current `test_*.c`. Windows runners retain their pinned compiler identity; Python intentionally accepts another compiler and prints its identity. The recipes and extra checks correspond to the PowerShell runners; the latest result exercises them on Windows. Native Linux execution parity is not established. Full-platform policy checks and target object-code audits are outside this runner.
+The executable inventory is checked against every current `test_*.c`. Windows runners retain their pinned compiler identity; Python intentionally accepts another compiler and prints its identity. The recipes and extra checks correspond to the PowerShell runners; the results cover Windows execution. Native Linux execution parity is not established. Full-platform policy checks and target object-code audits are outside this runner.
 
 ## Target build
 
