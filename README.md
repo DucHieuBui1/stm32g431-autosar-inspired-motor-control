@@ -77,7 +77,7 @@ $workspace = Join-Path $env:TEMP 'g431-build-workspace'
 & "$ide\headless-build.bat" -data $workspace -import $project -cleanBuild G431_Motor_Control/Debug -cleanBuild G431_Motor_Control/Release
 ```
 
-**Current target build is unverified.** The recorded headless attempt exited 13 during import, before compilation: Eclipse interpreted `V:/` as an unsupported URI scheme. The Windows-native path command above has not been verified successfully. See [build troubleshooting](docs/verification.md#target-build).
+**Current target compilation and linking are unverified.** No successful Debug/Release build result for the current source is included. See [verification scope](docs/verification.md#target-build).
 
 ## Host verification
 
@@ -94,7 +94,7 @@ The latest 2026-10-11 Windows run compiled and executed **16 C executables**, ch
 
 ## Hardware status and current limitations
 
-Historical records describe bounded board checks with motor/power-stage supplies disconnected on earlier images. They do not establish target behavior for the current source; see [hardware evidence](docs/verification.md#hardware-evidence).
+Hardware behavior for the current source remains unverified. See [hardware verification limits](docs/verification.md#hardware-evidence).
 
 - Measurement, current-scale, control-parameter and sampling-timing approval remain `FALSE`; operational parameters/evidence digests are unpopulated in [MotorControlCdd_Cfg.c](Software/Bsw/ComplexDrivers/MotorControl/Src/MotorControlCdd_Cfg.c).
 - [UserCommand](Software/Asw/UserCommand/Src/User_Command.c) defaults to disabled with zero current/duration/lease. [CommandArbitration_Evaluate](Software/Asw/CommandArbitration/Src/CommandArbitration.c) accepts only bounded zero-current requests and returns `NOT_READY`; the RTE adapter preserves that restriction. The profile getter has no production consumer.

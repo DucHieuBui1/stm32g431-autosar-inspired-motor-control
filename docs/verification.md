@@ -28,11 +28,11 @@ The Windows PowerShell runners under `Tests/Host/` pin MinGW GCC 6.3.0 at `C:\Mi
 
 [Latest raw output](host-test-2026-10-11.txt) records this execution. The count describes checks, not test cases or coverage. The manifest identifies exact input bytes, including firmware, tests, runners, IDE inputs and dependency files. This is host evidence only; target compilation, electrical behavior and motor performance remain unverified.
 
-[Earlier raw output](host-test-result.txt) is retained as a separate historical capture with the same Windows compiler and 42-check summary. It is not the latest execution. A previously reported Linux GCC 13.3 result has no raw artifacts in this repository and is not treated as reproduced evidence. Native Linux execution remains unverified.
+Native Linux execution remains unverified.
 
-## Windows include-path troubleshooting
+## Windows checkout path
 
-Older MinGW GCC can fail to open a deeply nested production-source include even when the file exists. The recorded failure affected `test_serial_communication_cdd.c` at its `../../../Software/.../SerialCommunicationCdd.c` include. Use a short checkout path or an unused drive alias:
+With MinGW GCC 6.3.0, use a short checkout path or an unused drive alias to avoid include-path length limits:
 
 ```powershell
 subst U: '<absolute-project-directory>'
@@ -40,7 +40,7 @@ python U:/scripts/run_host_tests.py --cc C:/MinGW/bin/gcc.exe
 subst U: /D
 ```
 
-The runner preserves the alias instead of resolving it to the long physical path. The latest run used this workaround. See the [technical incident log](VERIFICATION_INCIDENT_LOG.md).
+The runner preserves the drive alias. The recorded Windows host run used this command.
 
 ## Input integrity
 
@@ -85,21 +85,10 @@ The executable inventory is checked against every current `test_*.c`. Windows ru
 
 ## Target build
 
-The recorded STM32CubeIDE 2.0.0 headless attempt exited 13 during project import, before compilation:
-
-```text
-No file system is defined for scheme: V
-```
-
-The import argument was `V:/`; Eclipse treated it as a URI scheme. Use a Windows-native absolute path as shown in the [build instructions](../README.md#build-instructions). That corrected command has no successful build result recorded here. Current-source compilation/linking is unverified; existing ELF files are not evidence for it. No target build was executed as part of the latest host run.
+Current-source compilation and linking are unverified. No successful Debug/Release build result is included. Use the [STM32CubeIDE build instructions](../README.md#build-instructions) to build the project. Host-test results do not establish target build success.
 
 ## Hardware evidence
 
-Historical summaries refer to earlier firmware images:
-
-- Gate G431-0: pre-ADC image programmed/byte-verified and bounded software/SWD regression on 2026-08-27, with motor/power-stage supply disconnected. Independent clock measurement and clock-failure injection remained open.
-- `G431-ADC-TR-001`, prepared 2026-08-31: T1 PASS on original/corrected images; T2 attempts 001-005 FAIL/ABORTED; attempt 006 bounded functional PASS. T3/T4 unexecuted, target gate open. Recorded corrected-image SHA-256: `B56D73EF567F572A9A80E0604A6C613E1B2AE34D6D05B0DD142C885636F4B108`.
-
-The underlying raw logs, methods, photos and exact binaries are not available in this repository, so these historical summaries cannot be independently checked here. They do not establish hardware behavior for the current source. Full motor operation, powered commissioning and closed-loop performance remain unverified.
+This repository does not include reproducible hardware-verification evidence for the current source. Full motor operation, powered commissioning and closed-loop performance remain unverified.
 
 Fake registers cannot reproduce asynchronous hardware, flag semantics, analog noise or preemption. Stubs cannot prove the integrated dependency. Host execution does not execute SVC/PendSV assembly or establish stack margin, WCET, watchdog expiry, trigger latency, electrical protection or motor parameters. Those remain separate target obligations.
